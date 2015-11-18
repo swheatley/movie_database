@@ -38,14 +38,18 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
+    #'corsheaders'
     'main',
 )
+INSTALLED_APPS = ('django_cassandra_engine',) + INSTALLED_APPS
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -77,19 +81,51 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
+# #DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'movie_database',
+#         'HOST': '127.0.0.1',
+#         'USER': 'root',
+#         'PASSWORD': '1jjackson!',
+#         'PORT': ''
+
+#     }
+# }
+
+#curl -O http://www.trieuvan.com/apache/cassandra/3.0.0/apache-cassandra-3.0.0-bin.tar.gz
+
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'dvddjango',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
+        'PORT': '',
+    },
+    'mysql': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'movie_database',
+        'NAME': 'dvdjango',
         'HOST': '127.0.0.1',
         'USER': 'root',
         'PASSWORD': '1jjackson!',
         'PORT': ''
+    },
+    'cassandra': {
+        'ENGINE': 'django_cassandra_engine',
+        'NAME': 'movie_database',
+        'TEST_NAME': 'movie_database',
+        'HOST': '127.0.0.1',
+        'OPTIONS': {
+            'replication': {
+                'strategy_class': 'SimpleStrategy',
+                'replication_factor': 1
 
+            }
+        }
     }
 }
-
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
