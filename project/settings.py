@@ -39,7 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
-    #'corsheaders'
+    # 'corsheaders'
     'main',
 )
 INSTALLED_APPS = ('django_cassandra_engine',) + INSTALLED_APPS
@@ -96,15 +96,15 @@ WSGI_APPLICATION = 'project.wsgi.application'
 #curl -O http://www.trieuvan.com/apache/cassandra/3.0.0/apache-cassandra-3.0.0-bin.tar.gz
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'dvddjango',
+    #     'USER': 'root',
+    #     'PASSWORD': '',
+    #     'HOST': '127.0.0.1',
+    #     'PORT': '',
+    # },
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dvddjango',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
-        'PORT': '',
-    },
-    'mysql': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dvdjango',
         'HOST': '127.0.0.1',
@@ -112,19 +112,19 @@ DATABASES = {
         'PASSWORD': '1jjackson!',
         'PORT': ''
     },
-    'cassandra': {
-        'ENGINE': 'django_cassandra_engine',
-        'NAME': 'movie_database',
-        'TEST_NAME': 'movie_database',
-        'HOST': '127.0.0.1',
-        'OPTIONS': {
-            'replication': {
-                'strategy_class': 'SimpleStrategy',
-                'replication_factor': 1
+    # 'cassandra': {
+    #     'ENGINE': 'django_cassandra_engine',
+    #     'NAME': 'movie_database',
+    #     'TEST_NAME': 'movie_database',
+    #     'HOST': '127.0.0.1',
+    #     'OPTIONS': {
+    #         'replication': {
+    #             'strategy_class': 'SimpleStrategy',
+    #             'replication_factor': 1
 
-            }
-        }
-    }
+    #         }
+    #     }
+    # }
 }
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

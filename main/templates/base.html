@@ -73,6 +73,9 @@
 
       <footer>
         <p>&copy; Company 2015</p>
+        <div id="pagination">
+
+    </div>
       </footer>
     </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
@@ -92,7 +95,7 @@
             ga('create','UA-XXXXX-X','auto');ga('send','pageview');
         </script>
 
-        {% verbatim %}
+        
         <script id="movie-list-template" type="text/x-handlebars-template">
         {{#each dvds}}
          <div class="row">
@@ -108,52 +111,156 @@
          </div>
         {{/each}}
         </script>
-        {% endverbatim %}
+       
 
         <script type='text/javascript'>
-            $(function(){
+
+
+        var movieList = $('#movie-list');
+            var navList = $('#nav-list');
+            var pagination = $('#pagination')
+            var page_letter = 'A'
+
+            $(function() {
                 console.log('something');
-                // insertion point
-                var movieList = $('#movie-list');
-                //the template
+
                 var rawTemplate = $('#movie-list-template').html();
-                //compiled template
-                var template = Handlebars.compile(rawTemplate);
+                var template1 = Handlebars.compile(rawTemplate);
+
+                var paginationRawTemplate = $('#pagination-template').html();
+                var template3 = Handlebars.compile(paginationRawTemplate);
+
 
                 $.ajax({
-                    type: 'GET',
-                    url: '/api_dvd_list/',
-                    data: {},
-                    success: function(data){
-                        // console.log(data);
-                        html_template = template(data);
-                        movieList.html(html_template);
+                    type:'GET',
+                    url:'http://127.0.0.1:8000/movie_list/',
+                    data:{},
+                    success: function(data) {
+
+
+                        list_template = template1(data)
+                        movieList.html(list_template);
+
+                        pagination_template = template3(data);
+                        pagination.html(pagination_template);
+
                     }
                 })
+
+                $('#pagination').on('click', '.page-button', function(e) {
+
+                    console.log(e.target.id);
+
+                    $.ajax({
+                        type:'GET',
+                        url:'http://127.0.0.1:8000/movie_list/',
+                        data:{'page': e.target.id, 'letter':page_letter},
+                        success: function(data) {
+
+                            list_template = template1(data)
+                            movieList.html(list_template);
+
+                            nav_template = template2(data);
+                            navList.html(nav_template);
+
+                            pagination_template = template3(data);
+                            pagination.html(pagination_template);
+
+                        }
+                    })
+                });
+            $('#nav-list').on('click', '.letter', function(e) {
+
+            console.log(e.target.id);
+
+            page_letter = e.target.id
+
+            $.ajax({
+            type:'GET',
+            url:'http://127.0.0.1:8000/movie_list/',
+            data:{'letter': e.target.id},
+            success: function(data) {
+
+                list_template = template1(data)
+                movieList.html(list_template);
+
+                nav_template = template2(data);
+                navList.html(nav_template);
+
+                pagination_template = template3(data);
+                pagination.html(pagination_template);
+
+            }
+        });
+
+    });
             });
-
-            // on click function
-            // give movie details
-
-            // $('#movie_list').on('click', '.movie', function(e){
+            // $(function(){
             //     console.log('something');
-            //     //insertion point
+            //     // insertion point
             //     var movieList = $('#movie-list');
             //     //the template
-            //     var rawTemplate = $('#movie-detail-template').html();
+            //     var rawTemplate = $('#movie-list-template').html();
             //     //compiled template
             //     var template = Handlebars.compile(rawTemplate);
 
             //     $.ajax({
             //         type: 'GET',
-            //         url: 'http://127.0.0.1:8000/dvd_detail/' + e.target.id,
+            //         url: '/api_dvd_list/',
             //         data: {},
             //         success: function(data){
-            //             html_template = template(data)
-            //             movieList.html(html_template)
+            //             // console.log(data);
+            //             html_template = template(data);
+            //             movieList.html(html_template);
             //         }
             //     })
             // });
+
+            // // on click function
+            // // give movie details
+
+            // // $('#movie_list').on('click', '.movie', function(e){
+            // //     console.log('something');
+            // //     //insertion point
+            // //     var movieList = $('#movie-list');
+            // //     //the template
+            // //     var rawTemplate = $('#movie-detail-template').html();
+            // //     //compiled template
+            // //     var template = Handlebars.compile(rawTemplate);
+            // $('#pagination').on('click', '.page-button', function(e){
+            //     console.log(e.target.id);
+
+            //     $.ajax({
+            //         type: 'GET',
+            //         url: 'http://127.0.0.1:8000/dvd_detail/' + e.target.id,
+            //         data: {'page': e.target.id},
+            //         success: function(data){
+            //             html_template = template(data)
+            //             movieList.html(html_template)
+
+            //             pagination_template = template3(data);
+            //             pagination.html(pagination_template);
+            //         }
+            //     })
+               
+            // //});
+
           </script>  
+             <script id="nav-list-template" type="text/x-handlebars-template">
+            {{#each letters}}
+              <li><a class="letter" id="{{this}}" href="#">{{ this }}</a></li>
+            {{/each}}
+        </script>
     </body>
 </html>
+
+
+
+
+
+       {# //<select  class="form-control"  name="pages" onchange="location = this.options[this.selectedIndex].value;">
+                <option value="#">Select a page</option>
+                {% for num in dvds.paginator.page_range %}
+                    <option value='{{request.path}}?page={{num}}'>Page {{num}}</option>
+                {% endfor %}
+            </select> #}

@@ -15,22 +15,30 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from django.conf import settings
-from django.conf.urls.static import static
-from main import views 
+#from django.conf import settings
+#from django.conf.urls.static import static
+#from main.model import views   
 
-import debug_toolbar
+#import debug_toolbar
 
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^dvd_list/$', 'main.views.dvd_list'),
-    # #url(r'^main_page/$', 'main.views.main_page'),
+    #url(r'^main_page/$', 'main.views.main_page'),
     # url(r'^dvd_detail/(?P<pk>\d+)/$', 'main.views.dvd_detail'),
     # url(r'^api_dvd_list/$', 'main.views.api_dvd_list'),
     # url(r'^api_dvd_detail/(?P<pk>\d+)/$', 'main.views.api_dvd_detail'),
-    url(r'^movie_list/$', 'main.views.dvd_list_temp'),
-    url(r'^movie_list/$', 'main.views.dvd_list_mysql'),
-    url(r'^__debug__/', include(debug_toolbar.urls)),
+
+    # This works 
+    url(r'^movie_list_temp/$', 'main.views.dvd_list_temp'),
+
+    # This doesn't work because you need a sql database
+    url(r'^movie_list_mysql/$', 'main.views.dvd_list_mysql'),
+
+    #url(r'^__debug__/', include(debug_toolbar.urls)),
     #url(r'^dvd_list_cas/$', 'main.views.movie_list_cas'),
+    # (r'^search/', include('haystack.urls')),
+    url(r'^dvd_list_dbv/$', 'main.views.dvd_list_dbv'),
+    # url(r'^dvd_list)
 ]
